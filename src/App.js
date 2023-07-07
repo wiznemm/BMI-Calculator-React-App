@@ -1,24 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { Container, Form, Button, Alert } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
+  const [weight, setWeight] = useState('');
+  const [height, setHeight] = useState('');
+  const [bmi, setBMI] = useState(null);
+
+  const calculateBMI = () => {
+    const heightInMeters = height / 100;
+    const bmiValue = weight / (heightInMeters * heightInMeters);
+    setBMI(bmiValue.toFixed(2));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container className="mt-5">
+      <h1 className="mb-4">BMI Calculator</h1>
+      <Form>
+        <Form.Group controlId="weight">
+          <Form.Label>Weight (in kg)</Form.Label>
+          <Form.Control
+            type="number"
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
+          />
+        </Form.Group>
+        <Form.Group controlId="height">
+          <Form.Label>Height (in cm)</Form.Label>
+          <Form.Control
+            type="number"
+            value={height}
+            onChange={(e) => setHeight(e.target.value)}
+          />
+        </Form.Group>
+        <Button variant="primary" onClick={calculateBMI}>
+          Calculate BMI
+        </Button>
+      </Form>
+      {bmi && (
+        <Alert variant="info" className="mt-4">
+          Your BMI is: {bmi}
+        </Alert>
+      )}
+    </Container>
   );
 }
 
